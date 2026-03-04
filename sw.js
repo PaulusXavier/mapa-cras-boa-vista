@@ -1,10 +1,9 @@
 const CACHE_NAME = 'mapa-cras-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/assets/index-dYbZMuNH.js',
-  '/assets/index-BMgjIaXT.css',
-  '/__manus__/debug-collector.js'
+  './',
+  './index.html',
+  './assets/index-CQnkXNZJ.js',
+  './assets/index-DQZ2lMXW.css'
 ];
 
 // Instalar o Service Worker e cachear arquivos
@@ -72,7 +71,7 @@ self.addEventListener('fetch', event => {
             return response;
           }
           // Retorna uma página offline se disponível
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         });
       });
     })
