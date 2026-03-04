@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+Disallow: /api/*
+Sitemap: https://mapacras-knxcid4p.manus.space/sitemap.xml
