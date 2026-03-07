@@ -1,4 +1,8 @@
 User-Agent: *
 Allow: /
+
+# Bloqueia pastas de API ou sistemas internos, se houver
 Disallow: /api/*
-Sitemap: https://mapacras-knxcid4p.manus.space/sitemap.xml
+
+# ATUALIZADO: Aponta para o novo domínio no GitHub Pages
+Sitemap: https://paulusxavier.github.io/mapa-cras-boa-vista/sitemap.xml
