@@ -1,78 +1,47 @@
-const CACHE_NAME = 'mapa-cras-v1';
+const CACHE_NAME = 'mapa-cras-v1.1'; // Mude a versão sempre que atualizar o app
 const urlsToCache = [
   './',
   './index.html',
-  './assets/index-CQnkXNZJ.js',
-  './assets/index-DQZ2lMXW.css'
+  './index-CQnkXNZJ.js',
+  './index-DQZ2lMXW.css',
+  './robots.txt'
 ];
 
-// Instalar o Service Worker e cachear arquivos
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache).catch(err => {
-        console.log('Erro ao cachear alguns arquivos:', err);
-        return Promise.resolve();
-      });
+      return cache.addAll(urlsToCache);
     })
   );
   self.skipWaiting();
 });
 
-// Ativar o Service Worker
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches.keys().then(keys => Promise.all(
+      keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null)
+    ))
   );
   self.clients.claim();
 });
 
-// Estratégia: Cache First, Fall back to Network
 self.addEventListener('fetch', event => {
-  // Ignorar requisições que não são GET
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then(response => {
-      // Se encontrar no cache, retorna
-      if (response) {
-        return response;
-      }
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) return cachedResponse;
 
-      // Caso contrário, tenta buscar da rede
-      return fetch(event.request).then(response => {
-        // Verifica se é uma resposta válida
-        if (!response || response.status !== 200 || response.type === 'error') {
-          return response;
+      return fetch(event.request).then(networkResponse => {
+        // Cacheia novas requisições (como mapas ou ícones externos)
+        if (networkResponse.ok) {
+          const cacheCopy = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, cacheCopy));
         }
-
-        // Clona a resposta para poder cachear
-        const responseToCache = response.clone();
-
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
-        });
-
-        return response;
+        return networkResponse;
       }).catch(() => {
-        // Se falhar, tenta retornar do cache
-        return caches.match(event.request).then(response => {
-          if (response) {
-            return response;
-          }
-          // Retorna uma página offline se disponível
-          return caches.match('./index.html');
-        });
+        // Se estiver offline e a rota não estiver no cache, entrega a Home
+        return caches.match('./index.html');
       });
     })
   );
