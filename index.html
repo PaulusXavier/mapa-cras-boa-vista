@@ -1,29 +1,31 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Mapa CRAS Boa Vista</title>    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Mapa CRAS Boa Vista</title>   
     <script>
       (function(){
         var redirect = sessionStorage.redirect;
         delete sessionStorage.redirect;
         if (redirect && redirect != location.href) {
+          // Restaura a URL original na barra do navegador sem recarregar
           history.replaceState(null, null, redirect);
         }
       })();
     </script>
     <script type="module" crossorigin src="./index-CQnkXNZJ.js"></script>
     <link rel="stylesheet" crossorigin href="./index-DQZ2lMXW.css">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://paulusxavier.github.io/mapa-cras-boa-vista/">
-    <meta property="og:title" content="Mapa CRAS Boa Vista">
-    <meta property="og:description" content="Aplicativo para visualização de mapa dos CRAS de Boa Vista, RR.">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Registro do Service Worker para PWA (opcional, mas recomendado)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
   </body>
 </html>
