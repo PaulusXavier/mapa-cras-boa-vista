@@ -1,0 +1,17 @@
+{
+  "name": "Mapa CRAS Boa Vista",
+  "short_name": "Mapa CRAS",
+  "start_url": "/mapa-cras-boa-vista/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c3e50",
+  "scope": "/mapa-cras-boa-vista/",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

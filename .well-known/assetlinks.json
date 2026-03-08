@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.paulo.mapacras",
+    "sha256_cert_fingerprints": ["6B:5C:B4:7A:49:57:3E:C7:30:EF:89:00:27:0B:4D:2E:77:E5:A5:A8:14:98:81:67:84:45:AD:92:07:9F:80:99"]
+  }
+}]
